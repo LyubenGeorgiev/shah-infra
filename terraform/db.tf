@@ -48,7 +48,7 @@ resource "kubernetes_secret" "redis-config" {
   }
 
   data = {
-    REDIS_HOST = aws_elasticache_cluster.redis_cache.configuration_endpoint.address
-    REDIS_PORT = aws_elasticache_cluster.redis_cache.port
+    REDIS_HOST = aws_elasticache_cluster.redis_cache.cache_nodes.0.address
+    REDIS_PORT = aws_elasticache_cluster.redis_cache.cache_nodes.0.port
   }
 }
