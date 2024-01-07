@@ -15,11 +15,42 @@ spec:
       containers:
         - name: shah-container
           image: lyubengeorgiev/shah:latest  # Docker image from your DockerHub repository
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080  # Port your Golang application is running on
-          # Add other necessary configurations (environment variables, volumes, etc.)
           env:
-            - name: DATABASE_HOST
-              value: "62.73.122.93"
-            - name: REDIS_HOST
-              value: "62.73.122.93"
+          - name: REDIS_HOST
+            valueFrom:
+              secretKeyRef:
+                name: redis-config
+                key: REDIS_ENDPOINT
+          - name: REDIS_PORT
+            valueFrom:
+              secretKeyRef:
+                name: redis-config
+                key: REDIS_ENDPOINT
+          - name: DATABASE_HOST
+            valueFrom:
+              secretKeyRef:
+                name: postgresql-config
+                key: POSTGRES_HOST
+          - name: POSTGRES_PORT
+            valueFrom:
+              secretKeyRef:
+                name: postgresql-config
+                key: POSTGRES_PORT
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: postgresql-config
+                key: POSTGRES_USER
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgresql-config
+                key: POSTGRES_PASSWORD
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                name: postgresql-config
+                key: POSTGRES_DB

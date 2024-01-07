@@ -36,7 +36,7 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(module.eks.kubeconfig-certificate-authority-data)
   host                   = data.aws_eks_cluster.cluster.endpoint
   token                  = data.aws_eks_cluster_auth.cluster.token
-
+  config_path            = "~/.kube/config"
 }
 
 
