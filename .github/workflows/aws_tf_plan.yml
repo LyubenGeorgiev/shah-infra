@@ -19,9 +19,6 @@ jobs:
         with:
           cli_config_credentials_token: ${{ secrets.TFC_API_TOKEN }}
 
-      - name: Go to terraform
-        run: cd terraform
-
       - name: Terraform Init
         id: init
         run: terraform init

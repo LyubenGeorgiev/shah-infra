@@ -27,7 +27,6 @@ resource "aws_vpc" "shah-vpc" {
   # tags = {
   #   Name = "shah-vpc"
   # }
-  
 }
 
 # resource "aws_subnet" "my-control-plane-subnet" {
