@@ -7,9 +7,6 @@ on:
 jobs:
   build-plan:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash    
     steps:
       - name: Checkout
         uses: actions/checkout@v3.1.0
@@ -19,19 +16,9 @@ jobs:
         with:
           cli_config_credentials_token: ${{ secrets.TFC_API_TOKEN }}
 
-      - name: Terraform Init
-        id: init
-        run: terraform init
-      
-      - name: Terraform Validate
-        id: validate
-        run: terraform validate
-
-      - name: Terraform Plan
-        id: plan
-        run: terraform plan
-      #   continue-on-error: true
-
-      # - name: Terraform Plan Status
-      #   if: steps.plan.outcome == 'failure'
-      #   run: exit 1
+      - name: Terraform
+        working-directory: ./terraform
+        run: |
+          terraform init
+          terraform validate
+          terraform plan
