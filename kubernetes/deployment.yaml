@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shah-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: shah
+  template:
+    metadata:
+      labels:
+        app: shah
+    spec:
+      containers:
+        - name: shah-container
+          image: lyubengeorgiev/shah:latest  # Docker image from your DockerHub repository
+          ports:
+            - containerPort: 8080  # Port your Golang application is running on
+          # Add other necessary configurations (environment variables, volumes, etc.)
+          env:
+            - name: DATABASE_HOST
+              value: "62.73.122.93"
+            - name: REDIS_HOST
+              value: "62.73.122.93"
