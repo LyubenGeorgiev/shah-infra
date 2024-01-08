@@ -5,7 +5,7 @@ resource "aws_db_instance" "postgresql_db" {
   engine_version       = "16.1"
   instance_class       = "db.t3.micro"
   username             = "root"
-  password             = "root"
+  password             = "root1234"
   db_name              = "shah"
   parameter_group_name = "default.postgres16"
   vpc_security_group_ids = [aws_security_group.rds_security_group.id]
@@ -18,7 +18,7 @@ resource "aws_db_instance" "postgresql_db" {
 }
 
 resource "aws_db_subnet_group" "shah_db_subnet_group" {
-  name = "shah_db_subnet_group"
+  name = "shah-db-subnet-group"
   subnet_ids = module.vpc.aws_private_subnet
 }
 
@@ -76,7 +76,7 @@ resource "aws_elasticache_cluster" "redis_cache" {
 }
 
 resource "aws_elasticache_subnet_group" "shah_elasticache_subnet_group" {
-  name       = "shah_elasticache_subnet_group"
+  name       = "shah-elasticache-subnet-group"
   subnet_ids = module.vpc.aws_private_subnet
 }
 
