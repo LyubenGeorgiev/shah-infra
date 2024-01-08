@@ -13,7 +13,6 @@ module "eks" {
   scaling_max_size        = 1
   scaling_min_size        = 1
   instance_types          = ["t3.micro"]
-  key_pair                = "TestKeyPair"
 }
 
 module "vpc" {

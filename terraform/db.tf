@@ -8,11 +8,28 @@ resource "aws_db_instance" "postgresql_db" {
   password             = "root"
   db_name              = "shah"
   parameter_group_name = "default.postgres13"
-
-  publicly_accessible = true
+  vpc_security_group_ids = [aws_security_group.rds_security_group.id]
 
   tags = {
     Name = "my-postgresql-db"
+  }
+}
+
+resource "aws_security_group" "rds_security_group" {
+  vpc_id = aws_vpc.shah.id
+
+  ingress {
+    from_port = aws_db_instance.postgresql_db.port
+    to_port   = aws_db_instance.postgresql_db.port
+    protocol  = "tcp"
+
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
@@ -39,9 +56,6 @@ resource "aws_elasticache_cluster" "redis_cache" {
   port                 = 6379
   parameter_group_name = "default.redis6.x"
 
-  # Set encryption attributes
-  transit_encryption_enabled = true
-
   # Make the cluster publicly accessible
   apply_immediately = true
   security_group_ids = [aws_security_group.redis_cache_sg.id]
@@ -56,16 +70,15 @@ resource "aws_security_group" "redis_cache_sg" {
   description = "Security group for Redis cache"
 
   ingress {
-    from_port   = 6379
-    to_port     = 6379
+    from_port   = aws_elasticache_cluster.redis_cache.port
+    to_port     = aws_elasticache_cluster.redis_cache.port
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"] # Allow access from any IP address
   }
-
   egress {
     from_port   = 0
-    to_port     = 65535
-    protocol    = "tcp"
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
