@@ -9,6 +9,7 @@ resource "aws_db_instance" "postgresql_db" {
   db_name              = "shah"
   parameter_group_name = "default.postgres13"
   vpc_security_group_ids = [aws_security_group.rds_security_group.id]
+  port = 5432
 
   tags = {
     Name = "my-postgresql-db"
@@ -19,8 +20,8 @@ resource "aws_security_group" "rds_security_group" {
   vpc_id = aws_vpc.shah.id
 
   ingress {
-    from_port = aws_db_instance.postgresql_db.port
-    to_port   = aws_db_instance.postgresql_db.port
+    from_port = 5432
+    to_port   = 5432
     protocol  = "tcp"
 
     cidr_blocks = ["0.0.0.0/0"]
@@ -70,8 +71,8 @@ resource "aws_security_group" "redis_cache_sg" {
   description = "Security group for Redis cache"
 
   ingress {
-    from_port   = aws_elasticache_cluster.redis_cache.port
-    to_port     = aws_elasticache_cluster.redis_cache.port
+    from_port   = 6379
+    to_port     = 6379
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"] # Allow access from any IP address
   }
