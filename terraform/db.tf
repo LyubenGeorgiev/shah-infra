@@ -19,7 +19,7 @@ resource "aws_db_instance" "postgresql_db" {
 
 resource "aws_db_subnet_group" "shah_db_subnet_group" {
   name = "shah_db_subnet_group"
-  subnet_ids = [module.vpc.private_shah_subnet_id]
+  subnet_ids = module.vpc.aws_private_subnet
 }
 
 resource "aws_security_group" "rds_security_group" {
@@ -77,7 +77,7 @@ resource "aws_elasticache_cluster" "redis_cache" {
 
 resource "aws_elasticache_subnet_group" "shah_elasticache_subnet_group" {
   name       = "shah_elasticache_subnet_group"
-  subnet_ids = [module.vpc.private_shah_subnet_id]
+  subnet_ids = module.vpc.aws_private_subnet
 }
 
 resource "aws_security_group" "redis_cache_sg" {

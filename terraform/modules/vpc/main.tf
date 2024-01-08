@@ -36,9 +36,10 @@ resource "aws_subnet" "public_shah_subnet" {
 }
 
 resource "aws_subnet" "private_shah_subnet" {
+  count                   = var.private_sn_count
   vpc_id                  = aws_vpc.shah.id
-  cidr_block              = var.private_cidrs
-  availability_zone       = random_shuffle.az_list.result[0]
+  cidr_block              = var.private_cidrs[count.index]
+  availability_zone       = random_shuffle.az_list.result[count.index]
   tags = {
     Name = var.tags
   }

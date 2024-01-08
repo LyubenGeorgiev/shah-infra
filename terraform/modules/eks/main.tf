@@ -23,9 +23,10 @@ resource "aws_eks_node_group" "shah" {
   subnet_ids      = var.aws_public_subnet
   instance_types  = var.instance_types
 
-  remote_access {
-    source_security_group_ids = [aws_security_group.node_group_one.id]
-  }
+  # remote_access {
+  #   ec2_ssh_key = tls_private_key.ssh_key.public_key_openssh
+  #   source_security_group_ids = [aws_security_group.node_group_one.id]
+  # }
 
   scaling_config {
     desired_size = var.scaling_desired_size

@@ -3,6 +3,7 @@
 variable "vpc_cidr" {}
 variable "access_ip" {}
 variable "public_sn_count" {}
+variable "private_sn_count" {}
 variable "public_cidrs" {
   type = list(any)
 }
@@ -20,5 +21,5 @@ variable "rt_route_cidr_block" {
 }
 
 variable "private_cidrs" {
-  
+
 }
