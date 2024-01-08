@@ -17,7 +17,9 @@ resource "aws_db_instance" "postgresql_db" {
 }
 
 resource "aws_security_group" "rds_security_group" {
-  vpc_id = aws_vpc.shah.id
+  vpc_id = module.vpc.vpc_id
+  name        = "rds-sg"
+  description = "Security group for RDS postgres"
 
   ingress {
     from_port = 5432
@@ -67,6 +69,7 @@ resource "aws_elasticache_cluster" "redis_cache" {
 }
 
 resource "aws_security_group" "redis_cache_sg" {
+  vpc_id = module.vpc.vpc_id
   name        = "redis-cache-sg"
   description = "Security group for Redis cache"
 

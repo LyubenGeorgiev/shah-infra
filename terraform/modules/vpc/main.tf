@@ -7,7 +7,7 @@ resource "aws_vpc" "shah" {
   }
 }
 
-resource "aws_internet_gateway" "cloudquicklabs_gw" {
+resource "aws_internet_gateway" "shah_gw" {
   vpc_id = aws_vpc.shah.id
 
   tags = {
@@ -24,7 +24,7 @@ resource "random_shuffle" "az_list" {
   result_count = 2
 }
 
-resource "aws_subnet" "public_cloudquicklabs_subnet" {
+resource "aws_subnet" "public_shah_subnet" {
   count                   = var.public_sn_count
   vpc_id                  = aws_vpc.shah.id
   cidr_block              = var.public_cidrs[count.index]
@@ -41,7 +41,7 @@ resource "aws_default_route_table" "internal_shah_default" {
 
   route {
     cidr_block = var.rt_route_cidr_block
-    gateway_id = aws_internet_gateway.cloudquicklabs_gw.id
+    gateway_id = aws_internet_gateway.shah_gw.id
   }
   tags = {
     Name = var.tags
@@ -50,6 +50,6 @@ resource "aws_default_route_table" "internal_shah_default" {
 
 resource "aws_route_table_association" "default" {
   count          = var.public_sn_count
-  subnet_id      = aws_subnet.public_cloudquicklabs_subnet[count.index].id
+  subnet_id      = aws_subnet.public_shah_subnet[count.index].id
   route_table_id = aws_default_route_table.internal_shah_default.id
 }
