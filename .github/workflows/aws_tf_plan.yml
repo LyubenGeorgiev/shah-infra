@@ -29,10 +29,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3.1.0
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      - id: install-aws-cli
+        uses: unfor19/install-aws-cli-action@v1
         with:
-          aws-region: eu-central-1
+          arch: amd64
 
       - uses: azure/setup-kubectl@v3
         id: install
@@ -40,6 +40,10 @@ jobs:
       - name: Configure AWS credentials and kubectl
         run: |
           aws eks --region eu-central-1 update-kubeconfig --name shah
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: 'eu-central-1'
 
       - name: Apply Kubernetes manifests
         run: |
