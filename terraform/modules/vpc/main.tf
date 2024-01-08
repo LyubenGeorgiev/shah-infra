@@ -35,6 +35,16 @@ resource "aws_subnet" "public_shah_subnet" {
   }
 }
 
+resource "aws_subnet" "private_shah_subnet" {
+  count                   = var.public_sn_count
+  vpc_id                  = aws_vpc.shah.id
+  cidr_block              = var.private_cidrs
+  availability_zone       = random_shuffle.az_list.result[0]
+  tags = {
+    Name = var.tags
+  }
+}
+
 
 resource "aws_default_route_table" "internal_shah_default" {
   default_route_table_id = aws_vpc.shah.default_route_table_id

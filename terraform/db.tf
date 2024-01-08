@@ -2,18 +2,24 @@ resource "aws_db_instance" "postgresql_db" {
   allocated_storage    = 10
   storage_type         = "gp2"
   engine               = "postgres"
-  engine_version       = "13.3"
+  engine_version       = "16.1"
   instance_class       = "db.t3.micro"
   username             = "root"
   password             = "root"
   db_name              = "shah"
-  parameter_group_name = "default.postgres13"
+  parameter_group_name = "default.postgres16"
   vpc_security_group_ids = [aws_security_group.rds_security_group.id]
+  db_subnet_group_name = aws_db_subnet_group.shah_db_subnet_group
   port = 5432
 
   tags = {
     Name = "my-postgresql-db"
   }
+}
+
+resource "aws_db_subnet_group" "shah_db_subnet_group" {
+  name = "shah_db_subnet_group"
+  subnet_ids = [module.vpc.private_shah_subnet_id]
 }
 
 resource "aws_security_group" "rds_security_group" {
@@ -62,10 +68,16 @@ resource "aws_elasticache_cluster" "redis_cache" {
   # Make the cluster publicly accessible
   apply_immediately = true
   security_group_ids = [aws_security_group.redis_cache_sg.id]
+  subnet_group_name = aws_elasticache_subnet_group.shah_elasticache_subnet_group
 
   tags = {
     Name = "shah-redis-cluster"
   }
+}
+
+resource "aws_elasticache_subnet_group" "shah_elasticache_subnet_group" {
+  name       = "shah_elasticache_subnet_group"
+  subnet_ids = [module.vpc.private_shah_subnet_id]
 }
 
 resource "aws_security_group" "redis_cache_sg" {

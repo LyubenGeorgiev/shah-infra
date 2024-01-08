@@ -6,3 +6,7 @@ output "aws_public_subnet" {
 output "vpc_id" {
   value = aws_vpc.shah.id
 }
+
+output "private_shah_subnet_id" {
+  value = aws_subnet.private_shah_subnet.id
+}
