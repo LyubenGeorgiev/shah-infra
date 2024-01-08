@@ -9,6 +9,8 @@ resource "aws_db_instance" "postgresql_db" {
   db_name              = "shah"
   parameter_group_name = "default.postgres13"
 
+  publicly_accessible = true
+
   tags = {
     Name = "my-postgresql-db"
   }
@@ -37,8 +39,38 @@ resource "aws_elasticache_cluster" "redis_cache" {
   port                 = 6379
   parameter_group_name = "default.redis6.x"
 
+  # Set encryption attributes
+  transit_encryption_enabled = true
+
+  # Make the cluster publicly accessible
+  apply_immediately = true
+  security_group_ids = [aws_security_group.redis_cache_sg.id]
+
   tags = {
     Name = "shah-redis-cluster"
+  }
+}
+
+resource "aws_security_group" "redis_cache_sg" {
+  name        = "redis-cache-sg"
+  description = "Security group for Redis cache"
+
+  ingress {
+    from_port   = 6379
+    to_port     = 6379
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Allow access from any IP address
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 65535
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "redis-cache-sg"
   }
 }
 

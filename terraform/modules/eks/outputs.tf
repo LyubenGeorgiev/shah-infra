@@ -14,3 +14,7 @@ output "cluster_endpoint" {
 output "cluster_name" {
   value = aws_eks_cluster.cloudquicklabs.name
 }
+
+output "eks_nodes_sg_id" {
+  value = aws_security_group.node_group_one.id
+}
